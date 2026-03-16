@@ -19,9 +19,9 @@
             align-items: flex-start;
             justify-content: center;
             padding: 20px 16px;
-            background-color: #0b2b44;
         }
 
+        /* 背景图 - 和主页保持一致 */
         body::before {
             content: '';
             position: fixed;
@@ -29,14 +29,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://raw.githubusercontent.com/wuhuang2/475class1/main/wallpaper.jpg') no-repeat center center/cover;
+            background: url('wallpaper.jpg') no-repeat center center/cover;
             filter: brightness(0.95);
             z-index: -2;
         }
 
         @media (max-width: 600px) {
             body::before {
-                background: url('https://raw.githubusercontent.com/wuhuang2/475class1/main/wallpaper.jpg') no-repeat center center/contain;
+                background: url('wallpaper.jpg') no-repeat center center/contain;
                 background-color: #0b2b44;
             }
         }
@@ -52,6 +52,7 @@
             z-index: -1;
         }
 
+        /* 主卡片 */
         .card {
             background: rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(8px);
@@ -66,6 +67,7 @@
             margin: 20px auto;
         }
 
+        /* 导航栏 */
         .nav-bar {
             display: flex;
             gap: 15px;
@@ -107,6 +109,7 @@
             text-align: center;
         }
 
+        /* 面包屑导航 */
         .breadcrumb {
             display: flex;
             flex-wrap: wrap;
@@ -135,6 +138,7 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
+        /* 文件夹/相册网格 */
         .folder-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -181,6 +185,7 @@
             margin-top: 5px;
         }
 
+        /* 媒体网格 */
         .media-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -241,6 +246,7 @@
             text-overflow: ellipsis;
         }
 
+        /* 加载指示器 */
         .loading {
             text-align: center;
             padding: 50px;
@@ -260,6 +266,7 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* 模态框（大图/视频预览）- 修复版本 */
         .modal {
             display: none;
             position: fixed;
@@ -272,7 +279,7 @@
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 40px;
         }
 
         .modal.active {
@@ -282,16 +289,31 @@
         .modal-content {
             max-width: 90%;
             max-height: 90%;
+            width: auto;
+            height: auto;
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .modal-content img, .modal-content video {
+        .modal-content img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             display: block;
+        }
+
+        .modal-content video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
         }
 
         .modal-close {
@@ -311,6 +333,7 @@
             justify-content: center;
             cursor: pointer;
             transition: 0.2s;
+            z-index: 1010;
         }
 
         .modal-close:hover {
@@ -318,32 +341,56 @@
             transform: scale(1.1);
         }
 
+        /* 手机端适配 */
         @media (max-width: 600px) {
             .card { padding: 25px 15px; }
             h1 { font-size: 2em; }
             .folder-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
             .media-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .modal { padding: 20px; }
+            .modal-close {
+                top: 20px;
+                right: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.5em;
+            }
+        }
+
+        /* 横屏适配 */
+        @media (orientation: landscape) and (max-height: 600px) {
+            .modal { padding: 10px; }
+            .modal-close {
+                top: 10px;
+                right: 10px;
+                width: 36px;
+                height: 36px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="card">
+        <!-- 导航栏 -->
         <div class="nav-bar">
-            <a href="https://tlwz475class.42web.io/" class="nav-link">🏠 班级主页</a>
-            <a href="https://tlwz475class.42web.io/school.html" class="nav-link">🏫 学校介绍</a>
-            <a href="#" class="nav-link active">📸 时光相册</a>
+            <a href="index.html" class="nav-link">🏠 班级主页</a>
+            <a href="school.html" class="nav-link">🏫 学校介绍</a>
+            <a href="media.html" class="nav-link active">📸 时光相册</a>
         </div>
 
         <h1>📖 475班 · 时光相册</h1>
 
+        <!-- 面包屑导航 -->
         <div class="breadcrumb" id="breadcrumb">
             <a href="#" data-path="">📁 根目录</a>
         </div>
 
+        <!-- 内容区域：由JavaScript动态生成 -->
         <div id="content-area">
             <div class="loading">加载中，请稍候...</div>
         </div>
 
+        <!-- 底部版权（和主页保持一致） -->
         <div style="margin-top: 40px; text-align: center; color: white; text-shadow: 0 1px 4px rgba(0,0,0,0.5); font-size: 0.9em; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
             <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-bottom: 10px;">
                 <span>屯留五中 475班</span> ｜ 毕业不散场 ｜ 永远在线
@@ -353,30 +400,28 @@
                 <a href="https://space.bilibili.com/3546734730938563" target="_blank" style="color: white; text-decoration: none; display: flex; align-items: center; gap: 4px;">
                     <span style="width:18px; height:18px; background:white; color:#1e4a6f; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:bold;">B</span> @锦云知夏_Glimpse
                 </a>
-                <span>· 本网站由GitHub pages、InfinityFree 提供免费支持</span>
+                <span>· 本网站开源</span>
             </div>
         </div>
     </div>
 
+    <!-- 模态框（预览大图/视频） -->
     <div class="modal" id="previewModal" onclick="closeModal()">
         <div class="modal-close" onclick="closeModal()">×</div>
         <div class="modal-content" id="modalContent" onclick="event.stopPropagation()"></div>
     </div>
 
     <script>
-        // GitHub 配置 - 直接使用 raw 链接
+        // GitHub 配置
         const GITHUB_OWNER = 'wuhuang2';
         const GITHUB_REPO = '475class1';
         const GITHUB_BRANCH = 'main';
-        const API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/`;
         const RAW_BASE = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/`;
+        const API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/`;
 
         // 当前路径
         let currentPath = '';
-
-        // 允许的图片/视频扩展名
-        const IMAGE_EXTS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'svg'];
-        const VIDEO_EXTS = ['mp4', 'webm', 'mov', 'avi', 'mkv', 'flv', 'm4v'];
+        let currentFiles = [];
 
         // 初始化
         document.addEventListener('DOMContentLoaded', () => {
@@ -392,30 +437,15 @@
             contentDiv.innerHTML = '<div class="loading">加载中，请稍候...</div>';
 
             try {
-                const apiUrl = API_BASE + (path ? path : '');
-                const response = await fetch(apiUrl);
-                
-                if (!response.ok) {
-                    throw new Error(`GitHub API error: ${response.status}`);
-                }
-                
-                const data = await response.json();
-
-                // 过滤掉 .gitignore 和本文件自己
-                const items = data.filter(item => 
-                    item.name !== '.gitignore' && 
-                    item.name !== 'index.html' &&
-                    item.name !== 'README.md'
-                );
-
-                if (items.length === 0) {
+                const data = await fetchGithubContents(path);
+                if (data.length === 0) {
                     contentDiv.innerHTML = '<div class="error-message">📁 这个文件夹是空的</div>';
                     return;
                 }
 
                 // 分离文件夹和文件
-                const folders = items.filter(item => item.type === 'dir');
-                const files = items.filter(item => item.type === 'file');
+                const folders = data.filter(item => item.type === 'dir');
+                const files = data.filter(item => item.type === 'file');
 
                 let html = '';
 
@@ -441,11 +471,12 @@
                     files.forEach(file => {
                         const fileName = file.name;
                         const fileExt = fileName.split('.').pop().toLowerCase();
-                        const isImage = IMAGE_EXTS.includes(fileExt);
-                        const isVideo = VIDEO_EXTS.includes(fileExt);
+                        const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'].includes(fileExt);
+                        const isVideo = ['mp4', 'webm', 'mov', 'avi', 'mkv'].includes(fileExt);
                         
                         if (isImage || isVideo) {
-                            const rawUrl = `${RAW_BASE}${path ? path + '/' : ''}${encodeURIComponent(fileName)}`;
+                            const encodedPath = currentPath ? currentPath + '/' + encodeURIComponent(fileName) : encodeURIComponent(fileName);
+                            const rawUrl = RAW_BASE + (currentPath ? currentPath + '/' + fileName : fileName);
                             
                             html += `
                                 <div class="media-card" onclick="previewMedia('${rawUrl}', '${isVideo ? 'video' : 'image'}')">
@@ -472,6 +503,16 @@
             }
         }
 
+        // 调用GitHub API获取目录内容
+        async function fetchGithubContents(path) {
+            const apiUrl = API_BASE + (path ? path : '');
+            const response = await fetch(apiUrl);
+            if (!response.ok) {
+                throw new Error(`GitHub API error: ${response.status}`);
+            }
+            return await response.json();
+        }
+
         // 更新面包屑导航
         function updateBreadcrumb(path) {
             const breadcrumbDiv = document.getElementById('breadcrumb');
@@ -491,6 +532,7 @@
 
             breadcrumbDiv.innerHTML = html;
 
+            // 为面包屑链接添加点击事件
             breadcrumbDiv.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', (e) => {
                     e.preventDefault();
@@ -500,15 +542,36 @@
             });
         }
 
-        // 预览媒体
+        // 预览媒体 - 修复版本
         function previewMedia(url, type) {
             const modal = document.getElementById('previewModal');
             const modalContent = document.getElementById('modalContent');
             
+            // 清空之前的内容
+            modalContent.innerHTML = '';
+            
+            // 创建新元素
             if (type === 'image') {
-                modalContent.innerHTML = `<img src="${url}" alt="preview">`;
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = 'preview';
+                // 确保图片加载完成后自适应
+                img.onload = function() {
+                    modalContent.style.width = 'auto';
+                    modalContent.style.height = 'auto';
+                };
+                modalContent.appendChild(img);
             } else {
-                modalContent.innerHTML = `<video src="${url}" controls autoplay></video>`;
+                const video = document.createElement('video');
+                video.src = url;
+                video.controls = true;
+                video.autoplay = true;
+                // 确保视频自适应
+                video.onloadedmetadata = function() {
+                    modalContent.style.width = 'auto';
+                    modalContent.style.height = 'auto';
+                };
+                modalContent.appendChild(video);
             }
             
             modal.classList.add('active');
@@ -518,11 +581,18 @@
         // 关闭模态框
         function closeModal() {
             const modal = document.getElementById('previewModal');
+            const modalContent = document.getElementById('modalContent');
             modal.classList.remove('active');
-            document.getElementById('modalContent').innerHTML = '';
+            // 停止视频播放
+            const video = modalContent.querySelector('video');
+            if (video) {
+                video.pause();
+            }
+            modalContent.innerHTML = '';
             document.body.style.overflow = '';
         }
 
+        // 点击模态框背景关闭
         window.onclick = function(event) {
             const modal = document.getElementById('previewModal');
             if (event.target === modal) {
@@ -530,6 +600,7 @@
             }
         }
 
+        // 按ESC键关闭
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
